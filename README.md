@@ -1,6 +1,6 @@
 # React TicTacToe
 
-> 공식문서 리액트 훑어보기 Part1
+> 리액트 공식문서 훑어보기 Part1
 
 ## Goal
 
