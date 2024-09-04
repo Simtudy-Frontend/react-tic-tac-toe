@@ -1,5 +1,7 @@
+import Board from '@/components/Board'
+
 const App = () => {
-  return <div>Hello World</div>
+  return <Board />
 }
 
 export default App
