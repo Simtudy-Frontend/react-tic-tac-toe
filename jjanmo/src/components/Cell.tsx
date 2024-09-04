@@ -1,11 +1,12 @@
+import { CellData } from '@/types'
 import styled from 'styled-components'
 
 interface Props {
-  value: number
+  cellData: CellData
 }
 
-const Cell = ({ value }: Props) => {
-  return <Container>{value}</Container>
+const Cell = ({ cellData }: Props) => {
+  return <Container>{cellData.value}</Container>
 }
 
 export default Cell

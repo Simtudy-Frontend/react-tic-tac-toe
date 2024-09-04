@@ -1,18 +1,15 @@
 import styled from 'styled-components'
 import Cell from '@/components/Cell'
+import { BoardData } from '@/types'
 
-const gridData = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-]
+interface Props {
+  data: BoardData
+}
 
-const Board = () => {
+const Board = ({ data }: Props) => {
   return (
     <Container>
-      {gridData.map((row, i) =>
-        row.map((_, j) => <Cell value={gridData[i][j]} />)
-      )}
+      {data.map((row, i) => row.map((_, j) => <Cell cellData={data[i][j]} />))}
     </Container>
   )
 }
