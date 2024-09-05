@@ -1,15 +1,27 @@
 import styled from 'styled-components'
 import Cell from '@/components/Cell'
-import { BoardData } from '@/types'
+import { BoardData, Player, Position } from '@/types'
 
 interface Props {
   data: BoardData
+  updateBoard: (position: Position) => void
+  myPiece: Player
 }
 
-const Board = ({ data }: Props) => {
+const Board = ({ data, updateBoard, myPiece }: Props) => {
   return (
     <Container>
-      {data.map((row, i) => row.map((_, j) => <Cell cellData={data[i][j]} />))}
+      {data.map((row, i) =>
+        row.map((_, j) => (
+          <Cell
+            key={`${i}-${j}`}
+            position={`${i}-${j}`}
+            cellData={data[i][j]}
+            updateBoard={updateBoard}
+            myPiece={myPiece}
+          />
+        ))
+      )}
     </Container>
   )
 }

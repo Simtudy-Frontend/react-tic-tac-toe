@@ -1,31 +1,81 @@
-import Board from '@/components/Board'
-import { BoardData, Player } from './types'
+import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import Board from '@/components/Board'
+import { BoardData, Player, Position } from '@/types'
 
-const boardData: BoardData = Array.from({ length: 3 }, (_, i) =>
+const initialData: BoardData = Array.from({ length: 3 }, (_, i) =>
   Array.from({ length: 3 }, (_, j) => ({ row: i, col: j, value: '' }))
 )
 
 const App = () => {
-  const [myPiece, setMyPiece] = useState<Player>('')
+  const [boardData, setBoardData] = useState<BoardData>(initialData)
+  const [turn, setTurn] = useState<Player>('')
+  const myPiece = useRef<Player>('')
 
-  const handleClick = (piece: Player) => () => {
-    if (myPiece) return
-    setMyPiece(piece)
+  const isFull = boardData
+    .flat()
+    .map((cell) => cell.value)
+    .every(Boolean)
+
+  const getPosition = () => {
+    if (isFull) return null
+
+    while (true) {
+      const x = Math.floor(Math.random() * 3)
+      const y = Math.floor(Math.random() * 3)
+      if (!boardData[x][y].value) return { x, y }
+    }
+  }
+
+  const handleButtonClick = (piece: Player) => () => {
+    if (myPiece.current) return
+
+    myPiece.current = piece
+    setTurn('X')
+  }
+
+  useEffect(() => {
+    if (!turn) return
+    if (turn !== myPiece.current) {
+      const position = getPosition()
+      if (!position) return
+
+      const { x, y } = position
+      const newBoardData = [...boardData]
+      newBoardData[x][y].value = turn
+      setBoardData(newBoardData)
+      setTurn(myPiece.current)
+    }
+  }, [turn])
+
+  const updateBoard = (position: Position) => {
+    const newBoardData = [...boardData]
+    newBoardData[position.x][position.y].value = turn
+    setBoardData(newBoardData)
+    setTurn(turn === 'X' ? 'O' : 'X')
   }
 
   return (
     <Container>
       <ButtonContainer>
-        <Button onClick={handleClick('X')} selected={myPiece === 'X'}>
+        <Button
+          onClick={handleButtonClick('X')}
+          selected={myPiece.current === 'X'}
+        >
           X
         </Button>
-        <Button onClick={handleClick('O')} selected={myPiece === 'O'}>
+        <Button
+          onClick={handleButtonClick('O')}
+          selected={myPiece.current === 'O'}
+        >
           O
         </Button>
       </ButtonContainer>
-      <Board data={boardData} />
+      <Board
+        data={boardData}
+        updateBoard={updateBoard}
+        myPiece={myPiece.current}
+      />
     </Container>
   )
 }
