@@ -1,17 +1,29 @@
 import Board from '@/components/Board'
-import { BoardData } from './types'
+import { BoardData, Player } from './types'
 import styled from 'styled-components'
+import { useEffect, useState } from 'react'
 
 const boardData: BoardData = Array.from({ length: 3 }, (_, i) =>
   Array.from({ length: 3 }, (_, j) => ({ row: i, col: j, value: '' }))
 )
 
 const App = () => {
+  const [myPiece, setMyPiece] = useState<Player>('')
+
+  const handleClick = (piece: Player) => () => {
+    if (myPiece) return
+    setMyPiece(piece)
+  }
+
   return (
     <Container>
       <ButtonContainer>
-        <Button>X</Button>
-        <Button>O</Button>
+        <Button onClick={handleClick('X')} selected={myPiece === 'X'}>
+          X
+        </Button>
+        <Button onClick={handleClick('O')} selected={myPiece === 'O'}>
+          O
+        </Button>
       </ButtonContainer>
       <Board data={boardData} />
     </Container>
@@ -34,7 +46,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
 `
-const Button = styled.button`
+const Button = styled.button<{ selected: boolean }>`
   padding: 8px 24px;
   margin: 6px;
   border: none;
@@ -43,10 +55,6 @@ const Button = styled.button`
   cursor: pointer;
   opacity: 0.8;
   font-size: 24px;
-  background-color: rgba(52, 73, 94, 1);
+  background-color: ${({ selected }) => (selected ? '#3498db' : '#7f8c8d')};
   color: white;
-  &:hover {
-    opacity: 1;
-    transition: 1s;
-  }
 `
