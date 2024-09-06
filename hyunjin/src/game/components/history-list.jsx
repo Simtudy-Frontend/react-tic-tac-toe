@@ -5,20 +5,20 @@ const History = ({ move }) => {
 
   const description = move > 0 ? `Go to move #${move}` : "Go to game start";
   return (
-    <li key={move}>
+    <li>
       <button onClick={() => jumpTo(move)}>{description}</button>
     </li>
   );
 };
 
 export const HistoryList = () => {
-  const { jumpTo, history } = useGameContext();
+  const { history } = useGameContext();
 
   return (
     <div className="ml-5">
       <ol>
         {history.map((_squares, move) => (
-          <History key={move} move={move} jumpTo={jumpTo} />
+          <History key={move} move={move} />
         ))}
       </ol>
     </div>
