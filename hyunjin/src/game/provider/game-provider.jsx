@@ -25,6 +25,10 @@ const gameReducer = (state, action) => {
         ...state,
         currentMove: action.nextMove,
       };
+    case "RESET_GAME":
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }
@@ -48,6 +52,10 @@ export const GameProvider = ({ children }) => {
     dispatch({ type: "JUMP_TO", nextMove });
   };
 
+  const handleResetGame = () => {
+    dispatch({ type: "RESET_GAME" });
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -56,6 +64,7 @@ export const GameProvider = ({ children }) => {
         xIsNext,
         currentSquares,
         handlePlay,
+        handleResetGame,
         jumpTo,
       }}
     >

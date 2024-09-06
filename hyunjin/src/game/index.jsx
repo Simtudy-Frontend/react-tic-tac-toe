@@ -1,13 +1,16 @@
-import { Board, HistoryList } from "./components";
+import { Board, HistoryList, ResetButton } from "./components";
 import { GameProvider } from "./provider/game-provider";
 
 export const Game = () => {
   return (
     <GameProvider>
-      <section className="flex flex-row">
+      <div className="flex">
         <Board />
         <HistoryList />
-      </section>
+      </div>
+
+      <ResetButton />
     </GameProvider>
   );
 };
+``;
