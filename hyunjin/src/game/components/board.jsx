@@ -31,14 +31,14 @@ export const Board = () => {
           key={row}
           className="clearfix after:content-[''] after:table after:clear-both"
         >
-          <Square value={squares[row]} onSquareClick={() => handleClick(row)} />
+          <Square value={squares[row]} onClick={() => handleClick(row)} />
           <Square
             value={squares[row + 1]}
-            onSquareClick={() => handleClick(row + 1)}
+            onClick={() => handleClick(row + 1)}
           />
           <Square
             value={squares[row + 2]}
-            onSquareClick={() => handleClick(row + 2)}
+            onClick={() => handleClick(row + 2)}
           />
         </div>
       ))}
