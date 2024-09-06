@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Board } from "./components";
+import { Board, HistoryList } from "./components";
 
 export const Game = () => {
   const [history, setHistory] = useState([Array(9).fill(null)]);
@@ -13,31 +13,15 @@ export const Game = () => {
     setCurrentMove(nextHistory.length - 1);
   }
 
-  function jumpTo(nextMove) {
+  const jumpTo = (nextMove) => {
     setCurrentMove(nextMove);
-  }
-
-  const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = "Go to move #" + move;
-    } else {
-      description = "Go to game start";
-    }
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    );
-  });
+  };
 
   return (
     <div className="flex flex-row">
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
 
-      <div className="ml-5">
-        <ol>{moves}</ol>
-      </div>
+      <HistoryList data={history} jumpTo={jumpTo} />
     </div>
   );
 };
