@@ -18,10 +18,9 @@ export const Game = () => {
   };
 
   return (
-    <div className="flex flex-row">
+    <section className="flex flex-row">
       <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-
       <HistoryList data={history} jumpTo={jumpTo} />
-    </div>
+    </section>
   );
 };
