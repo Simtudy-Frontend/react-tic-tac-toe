@@ -1,4 +1,8 @@
-const History = ({ move, jumpTo }) => {
+import { useGameContext } from "../provider/game-provider";
+
+const History = ({ move }) => {
+  const { jumpTo } = useGameContext();
+
   const description = move > 0 ? `Go to move #${move}` : "Go to game start";
   return (
     <li key={move}>
@@ -7,11 +11,13 @@ const History = ({ move, jumpTo }) => {
   );
 };
 
-export const HistoryList = ({ data, jumpTo }) => {
+export const HistoryList = () => {
+  const { jumpTo, history } = useGameContext();
+
   return (
     <div className="ml-5">
       <ol>
-        {data.map((squares, move) => (
+        {history.map((_squares, move) => (
           <History key={move} move={move} jumpTo={jumpTo} />
         ))}
       </ol>

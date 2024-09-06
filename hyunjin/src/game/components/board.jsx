@@ -1,7 +1,14 @@
 import { calculateWinner } from "@/game/utils";
 import { Square } from ".";
+import { useGameContext } from "../provider/game-provider";
 
-export const Board = ({ xIsNext, squares, onPlay }) => {
+export const Board = () => {
+  const {
+    xIsNext,
+    handlePlay: onPlay,
+    currentSquares: squares,
+  } = useGameContext();
+
   const handleClick = (i) => {
     if (calculateWinner(squares) || squares[i]) {
       return;
