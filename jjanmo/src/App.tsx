@@ -4,11 +4,10 @@ import Board from '@/components/Board'
 import { BoardData, Player, Position } from '@/types'
 import { getPosition } from '@/utils'
 import useWinner from '@/hooks/useWinner'
-
-const initialData: BoardData = Array.from({ length: 3 }, (_, i) => Array.from({ length: 3 }, (_, j) => ({ row: i, col: j, value: '' })))
+import { initialBoardData } from '@/constants'
 
 const App = () => {
-  const [boardData, setBoardData] = useState<BoardData>(initialData)
+  const [boardData, setBoardData] = useState<BoardData>(initialBoardData)
   const [turn, setTurn] = useState<Player>('')
 
   const myPiece = useRef<Player>('')

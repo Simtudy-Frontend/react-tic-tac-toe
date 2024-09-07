@@ -1,10 +1,7 @@
+import { useEffect, useState } from 'react'
 import { BoardData, Player, Winner } from '@/types'
 import { isFull } from '@/utils'
-import { useEffect, useState } from 'react'
-
-const X_WIN = 3
-const O_WIN = -3
-const INDEX_TEMPLATE = [0, 1, 2]
+import { INDEX_TEMPLATE, O_WIN, X_WIN } from '@/constants'
 
 const useWinner = (boardData: BoardData) => {
   const [winner, setWinner] = useState<Winner>('')
