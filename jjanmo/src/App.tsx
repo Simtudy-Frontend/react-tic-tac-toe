@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import Board from '@/components/Board'
 import { BoardData, Player, Position } from '@/types'
 import { getPosition } from '@/utils'
 import useWinner from '@/hooks/useWinner'
 import { initialBoardData } from '@/constants'
+import SelectPlayerButtons from './components/SelectPlayerButtons'
 
 const App = () => {
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData)
@@ -13,13 +14,6 @@ const App = () => {
   const myPiece = useRef<Player>('')
 
   const { winner } = useWinner(boardData)
-
-  const handleButtonClick = (piece: Player) => () => {
-    if (myPiece.current) return
-
-    myPiece.current = piece
-    setTurn('X')
-  }
 
   useEffect(() => {
     if (!turn) return
@@ -40,17 +34,14 @@ const App = () => {
     if (!winner) setTurn(turn === 'X' ? 'O' : 'X')
   }
 
+  const updateTurn = useCallback((initialTurn?: Player) => {
+    if (!turn && initialTurn) myPiece.current = initialTurn
+    setTurn((prev) => (prev === 'X' ? 'O' : 'X'))
+  }, [])
+
   return (
     <Container>
-      <ButtonContainer>
-        <Button onClick={handleButtonClick('X')} selected={myPiece.current === 'X'}>
-          X
-        </Button>
-        <Button onClick={handleButtonClick('O')} selected={myPiece.current === 'O'}>
-          O
-        </Button>
-      </ButtonContainer>
-      
+      <SelectPlayerButtons updateTurn={updateTurn} />
       <>
         {!winner && turn && <Turn>{turn} 차례</Turn>}
         {winner === 'draw' && <Result>무승부입니다.</Result>}
@@ -73,24 +64,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `
-const ButtonContainer = styled.div`
-  width: 100%;
-  margin: 10px 16px;
-  display: flex;
-  justify-content: center;
-`
-const Button = styled.button<{ selected: boolean }>`
-  padding: 8px 24px;
-  margin: 6px;
-  border: none;
-  border-radius: 4px;
-  outline: none;
-  cursor: pointer;
-  opacity: 0.8;
-  font-size: 24px;
-  background-color: ${({ selected }) => (selected ? '#3498db' : '#7f8c8d')};
-  color: white;
-`
+
 const Turn = styled.div`
   font-size: 20px;
   margin-bottom: 10px;
