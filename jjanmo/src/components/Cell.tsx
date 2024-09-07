@@ -1,15 +1,17 @@
-import { CellData, Player, Position } from '@/types'
+import { CellData, Player, Position, Winner } from '@/types'
 import styled from 'styled-components'
 
 interface Props {
   cellData: CellData
   position: string
   myPiece: Player
+  winner: Winner
   updateBoard: (position: Position) => void
 }
 
-const Cell = ({ cellData, position, myPiece, updateBoard }: Props) => {
+const Cell = ({ cellData, position, myPiece, updateBoard, winner }: Props) => {
   const handleClick = () => {
+    if (winner) return alert('게임이 종료되었습니다.')
     if (!myPiece) return alert('먼저 플레이어를 선택해주세요.')
     if (cellData.value) return alert('이미 선택된 칸입니다.')
 

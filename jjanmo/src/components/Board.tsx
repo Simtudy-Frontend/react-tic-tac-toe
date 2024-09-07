@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import Cell from '@/components/Cell'
 import { BoardData, Player, Position } from '@/types'
+import useWinner from '@/hooks/useWinner'
 
 interface Props {
   data: BoardData
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const Board = ({ data, updateBoard, myPiece }: Props) => {
+  const { winner } = useWinner(data)
+
   return (
     <Container>
       {data.map((row, i) =>
@@ -19,6 +22,7 @@ const Board = ({ data, updateBoard, myPiece }: Props) => {
             cellData={data[i][j]}
             updateBoard={updateBoard}
             myPiece={myPiece}
+            winner={winner}
           />
         ))
       )}
