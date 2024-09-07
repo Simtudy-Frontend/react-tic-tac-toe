@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import Board from '@/components/Board'
+import SelectPlayerButtons from '@/components/SelectPlayerButtons'
+import GameStatus from '@/components/GameStatus'
 import { BoardData, Player, Position } from '@/types'
-import { getPosition } from '@/utils'
 import useWinner from '@/hooks/useWinner'
+import { getPosition } from '@/utils'
 import { initialBoardData } from '@/constants'
-import SelectPlayerButtons from './components/SelectPlayerButtons'
 
 const App = () => {
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData)
@@ -31,7 +32,7 @@ const App = () => {
     newBoardData[x][y].value = turn
     setBoardData(newBoardData)
 
-    if (!winner) setTurn(turn === 'X' ? 'O' : 'X')
+    setTurn(turn === 'X' ? 'O' : 'X')
   }
 
   const updateTurn = useCallback((initialTurn?: Player) => {
@@ -42,11 +43,7 @@ const App = () => {
   return (
     <Container>
       <SelectPlayerButtons updateTurn={updateTurn} />
-      <>
-        {!winner && turn && <Turn>{turn} 차례</Turn>}
-        {winner === 'draw' && <Result>무승부입니다.</Result>}
-        {winner && winner !== 'draw' && <Result>승자는 {winner} 입니다.</Result>}
-      </>
+      <GameStatus turn={turn} winner={winner} />
 
       <Board data={boardData} updateBoard={updateBoard} myPiece={myPiece.current} />
     </Container>
@@ -63,17 +60,4 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
-
-const Turn = styled.div`
-  font-size: 20px;
-  margin-bottom: 10px;
-`
-const Result = styled.div`
-  width: 300px;
-  margin-bottom: 10px;
-  font-size: 28px;
-  font-weight: 600;
-  color: #e74c3c;
-  text-align: center;
 `
