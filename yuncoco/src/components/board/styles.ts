@@ -11,5 +11,4 @@ export const CellGroup = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 30rem;
-  height: 30rem;
 `;
