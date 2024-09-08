@@ -15,10 +15,17 @@ function App() {
     const newBoardState = history[currentStateIndex].slice();
     newBoardState[clickedCellIndex] = isXCurrentPlayer ? "X" : "O";
 
-    const newHistory = [...history, newBoardState];
+    const newHistory = [
+      ...history.slice(0, currentStateIndex + 1),
+      newBoardState,
+    ];
     setHistory(newHistory);
 
     setCurrentStateIndex(newHistory.length - 1);
+  };
+
+  const handleJumpClick = (clickedHistoryIndex: number) => {
+    setCurrentStateIndex(clickedHistoryIndex);
   };
 
   return (
@@ -29,7 +36,7 @@ function App() {
       }`}</NextPlayer>
       <Content>
         <Board currentState={history[currentStateIndex]} onPlay={handlePlay} />
-        <BoardHistory history={history} />
+        <BoardHistory history={history} onJumpClick={handleJumpClick} />
       </Content>
     </Container>
   );
