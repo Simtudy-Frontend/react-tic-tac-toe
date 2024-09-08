@@ -34,12 +34,11 @@ const App = () => {
     const newBoardData = [...boardData]
     newBoardData[x][y].value = turn
     setBoardData(newBoardData)
-
     setTurn(turn === 'X' ? 'O' : 'X')
   }
 
-  const updateTurn = useCallback((initialTurn?: Player) => {
-    if (!turn && initialTurn) myPiece.current = initialTurn
+  const updateTurn = useCallback((selectedPlayer?: Player) => {
+    if (!turn && selectedPlayer) myPiece.current = selectedPlayer
     setTurn((prev) => (prev === 'X' ? 'O' : 'X'))
   }, [])
 

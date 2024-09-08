@@ -12,9 +12,9 @@ const SelectPlayerButtons = ({ updateTurn }: Props) => {
   const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (selected) return
 
-    const piece = e.currentTarget.textContent as Player
-    updateTurn(piece)
-    setSelected(piece)
+    const selectedPlayer = e.currentTarget.textContent as Player
+    updateTurn(selectedPlayer)
+    setSelected(selectedPlayer)
   }
 
   return (
