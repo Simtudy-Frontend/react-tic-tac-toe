@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Square from "@/components/Square";
 
-const Board = ({ squares, onBoardClick }) => {
+const Board = ({ squares, onBoardClick, winningLine }) => {
   return (
     <BoardContainer>
       {squares.map((square, index) => (
@@ -10,6 +10,7 @@ const Board = ({ squares, onBoardClick }) => {
           key={index}
           value={square}
           onSquareClick={() => onBoardClick(index)}
+          isWinningLine={winningLine ? winningLine.includes(index) : false}
         />
       ))}
     </BoardContainer>

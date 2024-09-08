@@ -14,7 +14,7 @@ const App = () => {
   const isPlayerTurn = playerMark === mark;
   const winner = calcWinner(squares);
   const isGameStarted = 0 < turnCount;
-  const isGameEnded = winner || turnCount >= 9;
+  const isGameEnded = winner.winner || turnCount >= 9;
 
   const handlePlayerSelect = (selectedMark) => {
     if (playerMark === selectedMark || isGameStarted || isGameEnded) {
@@ -45,7 +45,11 @@ const App = () => {
     if (position === null) {
       return;
     }
-    updateSquares(position, mark);
+
+    const timer = setTimeout(() => {
+      updateSquares(position, mark);
+    }, 700);
+    return () => clearTimeout(timer);
   }, [isPlayerTurn, mark, squares]);
 
   const handleReset = () => {
@@ -58,7 +62,7 @@ const App = () => {
   return (
     <Container>
       <GameStatus
-        winner={winner}
+        winner={winner.winner}
         turnCount={turnCount}
         playerMark={playerMark}
         isPlayerTurn={isPlayerTurn}
@@ -68,7 +72,11 @@ const App = () => {
         onPlayerSelect={handlePlayerSelect}
         turnMark={isGameEnded ? null : mark}
       ></SelectPlayer>
-      <Board squares={squares} onBoardClick={handleClick}></Board>
+      <Board
+        squares={squares}
+        onBoardClick={handleClick}
+        winningLine={winner.line}
+      ></Board>
       <RestartButton onClick={handleReset}>게임 다시 시작하기</RestartButton>
     </Container>
   );

@@ -41,4 +41,5 @@ const PlayerButton = styled.div`
   border-radius: 3px;
   cursor: pointer;
   text-align: center; /* 수평 가운데 정렬 */
+  transition: all 0.9s ease;
 `;
