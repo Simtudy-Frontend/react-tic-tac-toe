@@ -72,7 +72,7 @@ const App = () => {
     if (lastGameSnapshot) {
       const { boardData, player, winner } = lastGameSnapshot
       const nextPlayer = player === 'X' ? 'O' : 'X'
-      setBoardData(boardData)
+      setBoardData(boardData.map<RowData>((row) => row.map<CellData>((cell) => ({ ...cell }))))
       setTurn(nextPlayer)
       setWinner(winner)
     }
