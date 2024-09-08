@@ -1,5 +1,5 @@
 import { calculateWinner } from "@/game/utils";
-import { Square } from ".";
+import { ResetButton, Square } from ".";
 import { useGameContext } from "../provider/game-provider";
 
 export const Board = () => {
@@ -24,13 +24,16 @@ export const Board = () => {
     : `Next player: ${xIsNext ? "X" : "O"}`;
 
   return (
-    <div>
-      <h3 className="mb-2.5">{status}</h3>
+    <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+      <div className="flex justify-between items-center mb-4 ">
+        <h3 className="text-xl 2xl:text-3xl font-semibold text-center text-gray-700">
+          {status}
+        </h3>
+        <ResetButton />
+      </div>
+
       {[0, 3, 6].map((row) => (
-        <div
-          key={row}
-          className="clearfix after:content-[''] after:table after:clear-both"
-        >
+        <div key={row} className="flex">
           <Square value={squares[row]} onClick={() => handleClick(row)} />
           <Square
             value={squares[row + 1]}
