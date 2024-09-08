@@ -8,16 +8,17 @@ import GameHistoryTracker from '@/components/GameHistoryTracker'
 
 import useWinner from '@/hooks/useWinner'
 import { getPosition } from '@/utils'
-import { BoardData, Player, Position } from '@/types'
+import { BoardData, GameHistroySnapshot, Player, Position, Winner } from '@/types'
 import { initialBoardData } from '@/constants'
 
 const App = () => {
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData)
   const [turn, setTurn] = useState<Player>('')
+  const [winner, setWinner] = useState<Winner>('')
 
   const myPiece = useRef<Player>('')
 
-  const { winner } = useWinner(boardData)
+  const { checkWinner } = useWinner()
 
   useEffect(() => {
     if (!turn) return
@@ -34,7 +35,9 @@ const App = () => {
     const newBoardData = [...boardData]
     newBoardData[x][y].value = turn
     setBoardData(newBoardData)
-    setTurn(turn === 'X' ? 'O' : 'X')
+
+    const winner = checkWinner(newBoardData)
+    winner ? setWinner(winner) : setTurn(turn === 'X' ? 'O' : 'X')
   }
 
   const updateTurn = useCallback((selectedPlayer?: Player) => {
@@ -42,16 +45,22 @@ const App = () => {
     setTurn((prev) => (prev === 'X' ? 'O' : 'X'))
   }, [])
 
+  const updateHistory = (snapshot: GameHistroySnapshot) => {
+    const { boardData, player } = snapshot
+    setBoardData(boardData)
+    setTurn(player)
+  }
+
   return (
     <Container>
       <Section>
         <SelectPlayerButtons updateTurn={updateTurn} />
         <GameStatus turn={turn} winner={winner} />
 
-        <Board boardData={boardData} updateBoard={updateBoard} myPiece={myPiece.current} />
+        <Board boardData={boardData} updateBoard={updateBoard} myPiece={myPiece.current} winner={winner} />
       </Section>
       <Section>
-        <GameHistoryTracker boardData={boardData} turn={turn} />
+        <GameHistoryTracker boardData={boardData} turn={turn} updateHistory={updateHistory} />
       </Section>
     </Container>
   )

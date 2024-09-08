@@ -1,17 +1,15 @@
 import styled from 'styled-components'
 import Cell from '@/components/Cell'
-import { BoardData, Player, Position } from '@/types'
-import useWinner from '@/hooks/useWinner'
+import { BoardData, Player, Position, Winner } from '@/types'
 
 interface Props {
   boardData: BoardData
-  updateBoard: (position: Position) => void
   myPiece: Player
+  winner: Winner
+  updateBoard: (position: Position) => void
 }
 
-const Board = ({ boardData, updateBoard, myPiece }: Props) => {
-  const { winner } = useWinner(boardData)
-
+const Board = ({ boardData, myPiece, winner, updateBoard }: Props) => {
   return (
     <Container>
       {boardData.map((row, i) =>
