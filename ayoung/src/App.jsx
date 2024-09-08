@@ -1,39 +1,50 @@
 import { useState, useEffect } from "react";
 import SelectPlayer from "@/components/SelectPlayer";
 import Board from "@/components/Board";
-import { calcGameStatus, getComputerPosition } from "@/utils/gameUtils";
+import GameStatus from "@/components/GameStatus";
+import { calcWinner, getComputerPosition } from "@/utils/gameUtils";
 import styled from "styled-components";
 
 const App = () => {
   const [playerMark, setPlayerMark] = useState("X");
   const [mark, setMark] = useState("X");
   const [squares, setSquares] = useState(Array(9).fill(null));
+  const [turnCount, setTurnCount] = useState(0);
 
   const isPlayerTurn = playerMark === mark;
-  const gameStatus = calcGameStatus(squares);
+  const winner = calcWinner(squares);
+  const isGameStarted = 0 < turnCount;
+  const isGameEnded = winner || turnCount >= 9;
 
   const handlePlayerSelect = (selectedMark) => {
-    if (playerMark === selectedMark || gameStatus.started || gameStatus.ended) {
+    if (playerMark === selectedMark || isGameStarted || isGameEnded) {
       return;
     }
     setPlayerMark(selectedMark);
   };
 
   const handleClick = (idx) => {
-    if (!isPlayerTurn || squares[idx] || gameStatus.ended) return;
+    if (!isPlayerTurn || isGameEnded) return;
     updateSquares(idx, mark);
   };
 
   const updateSquares = (idx, currentMark) => {
+    if (squares[idx]) {
+      return;
+    }
     const newSquares = [...squares];
     newSquares[idx] = currentMark;
+    setTurnCount((prev) => prev + 1);
     setSquares(newSquares);
     setMark((prevMark) => (prevMark === "X" ? "O" : "X"));
   };
 
   useEffect(() => {
-    if (isPlayerTurn || gameStatus.ended) return;
+    if (isPlayerTurn || isGameEnded) return;
     const position = getComputerPosition(squares, mark);
+    if (position === null) {
+      return;
+    }
     updateSquares(position, mark);
   }, [isPlayerTurn, mark, squares]);
 
@@ -41,14 +52,21 @@ const App = () => {
     setSquares(Array(9).fill(null)); // 게임 보드를 초기화
     setMark("X"); // 선공을 X로 초기화
     setPlayerMark("X"); // 플레이어 선택을 X로 초기화
+    setTurnCount(0); // 플레이 턴 카운트 초기화
   };
 
   return (
     <Container>
+      <GameStatus
+        winner={winner}
+        turnCount={turnCount}
+        playerMark={playerMark}
+        isPlayerTurn={isPlayerTurn}
+      ></GameStatus>
       <SelectPlayer
         player={playerMark}
         onPlayerSelect={handlePlayerSelect}
-        turnMark={gameStatus.ended ? null : mark}
+        turnMark={isGameEnded ? null : mark}
       ></SelectPlayer>
       <Board squares={squares} onBoardClick={handleClick}></Board>
       <RestartButton onClick={handleReset}>게임 다시 시작하기</RestartButton>
