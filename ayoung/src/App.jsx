@@ -37,6 +37,12 @@ const App = () => {
     updateSquares(position, mark);
   }, [isPlayerTurn, mark, squares]);
 
+  const handleReset = () => {
+    setSquares(Array(9).fill(null)); // 게임 보드를 초기화
+    setMark("X"); // 선공을 X로 초기화
+    setPlayerMark("X"); // 플레이어 선택을 X로 초기화
+  };
+
   return (
     <Container>
       <SelectPlayer
@@ -45,6 +51,7 @@ const App = () => {
         turnMark={gameStatus.ended ? null : mark}
       ></SelectPlayer>
       <Board squares={squares} onBoardClick={handleClick}></Board>
+      <RestartButton onClick={handleReset}>게임 다시 시작하기</RestartButton>
     </Container>
   );
 };
@@ -60,4 +67,18 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const RestartButton = styled.button`
+  margin-top: 5px;
+  width: 50%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    opacity: 0.3;
+    background: rgba(214, 228, 229, 0.6);
+  }
 `;
