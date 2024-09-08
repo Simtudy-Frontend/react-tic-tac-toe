@@ -8,13 +8,14 @@ import GameHistoryTracker from '@/components/GameHistoryTracker'
 
 import useWinner from '@/hooks/useWinner'
 import { getPosition } from '@/utils'
-import { BoardData, GameHistroySnapshot, Player, Position, Winner } from '@/types'
+import { BoardData, CellData, GameHistroySnapshot, Player, Position, RowData, Winner } from '@/types'
 import { initialBoardData } from '@/constants'
 
 const App = () => {
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData)
   const [turn, setTurn] = useState<Player>('')
   const [winner, setWinner] = useState<Winner>('')
+  const [gameHistory, setGameHistory] = useState<GameHistroySnapshot[]>([])
 
   const myPiece = useRef<Player>('')
 
@@ -36,8 +37,16 @@ const App = () => {
     newBoardData[x][y].value = turn
     setBoardData(newBoardData)
 
+    const nextTurn = turn === 'X' ? 'O' : 'X'
     const winner = checkWinner(newBoardData)
-    winner ? setWinner(winner) : setTurn(turn === 'X' ? 'O' : 'X')
+    if (winner) setWinner(winner)
+    else setTurn(nextTurn)
+
+    updateGameHistory({
+      boardData: newBoardData,
+      player: turn, // currnet player, 보드를 마지막에 업데이트한 사람
+      winner,
+    })
   }
 
   const updateTurn = useCallback((selectedPlayer?: Player) => {
@@ -45,10 +54,28 @@ const App = () => {
     setTurn((prev) => (prev === 'X' ? 'O' : 'X'))
   }, [])
 
-  const updateHistory = (snapshot: GameHistroySnapshot) => {
-    const { boardData, player } = snapshot
-    setBoardData(boardData)
-    setTurn(player)
+  const updateGameHistory = (currentSnapshot: GameHistroySnapshot) => {
+    const { boardData, player, winner } = currentSnapshot
+    const newGameSnapshot = {
+      boardData: boardData.map<RowData>((row) => row.map<CellData>((cell) => ({ ...cell }))),
+      player,
+      winner,
+    }
+
+    setGameHistory([...gameHistory, newGameSnapshot])
+  }
+
+  const rewindBoardToSnapshot = (gameHistory: GameHistroySnapshot[]) => {
+    setGameHistory(gameHistory)
+
+    const lastGameSnapshot = gameHistory.at(-1)
+    if (lastGameSnapshot) {
+      const { boardData, player, winner } = lastGameSnapshot
+      const nextPlayer = player === 'X' ? 'O' : 'X'
+      setBoardData(boardData)
+      setTurn(nextPlayer)
+      setWinner(winner)
+    }
   }
 
   return (
@@ -57,10 +84,14 @@ const App = () => {
         <SelectPlayerButtons updateTurn={updateTurn} />
         <GameStatus turn={turn} winner={winner} />
 
-        <Board boardData={boardData} updateBoard={updateBoard} myPiece={myPiece.current} winner={winner} />
+        <Board boardData={boardData} myPiece={myPiece.current} winner={winner} updateBoard={updateBoard} />
       </Section>
       <Section>
-        <GameHistoryTracker boardData={boardData} turn={turn} updateHistory={updateHistory} />
+        <GameHistoryTracker
+          gameHistory={gameHistory}
+          rewindBoardToSnapshot={rewindBoardToSnapshot}
+          myPiece={myPiece.current}
+        />
       </Section>
     </Container>
   )

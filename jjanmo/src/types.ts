@@ -13,5 +13,5 @@ export type Winner = Player | 'draw'
 export interface GameHistroySnapshot {
   boardData: BoardData
   player: Player
+  winner: Winner
 }
-export type GameHistroy = GameHistroySnapshot[]

@@ -19,7 +19,7 @@ const useWinner = () => {
     if ([row0, row1, row2, col0, col1, col2, cross1, cross2].includes(O_WIN)) return 'O'
     if (isFull(boardData)) return 'draw'
 
-    return null
+    return ''
   }
 
   return { checkWinner }
