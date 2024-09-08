@@ -11,12 +11,11 @@ const useGameHistory = ({ boardData, turn }: Params) => {
 
   useEffect(() => {
     if (!turn) return
-    console.log('@@', boardData)
 
     const newGameSnapshot = { boardData: boardData.map<RowData>((row) => row.map<CellData>((cell) => ({ ...cell }))), player: turn }
     setGameHistory((prev) => [...prev, newGameSnapshot])
     console.log(gameHistory)
-  }, [turn])
+  }, [boardData])
 
   return { gameHistory }
 }
