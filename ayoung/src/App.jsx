@@ -13,7 +13,7 @@ const App = () => {
   const gameStatus = calcGameStatus(squares);
 
   const handlePlayerSelect = (selectedMark) => {
-    if (playerMark === selectedMark || gameStatus.ended) {
+    if (playerMark === selectedMark || gameStatus.started || gameStatus.ended) {
       return;
     }
     setPlayerMark(selectedMark);
