@@ -25,13 +25,16 @@ export default SelectPlayer;
 
 const Container = styled.div`
   width: 50%;
+  height: 5vh;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.5em;
 `;
 
 const PlayerButton = styled.div`
   width: 50%;
-  margin: 3px;
+  margin-bottom: 2px;
   background-color: ${(props) => (props.$isSelected ? "#D6E4E5" : "#f1f1f1")};
   color: ${(props) => (props.$isSelected ? "black" : "black")};
   border: 2px solid ${(props) => (props.$isTurn ? "gold" : "white")};

@@ -4,30 +4,24 @@ import Square from "@/components/Square";
 
 const Board = ({ squares, onBoardClick }) => {
   return (
-    <>
-      <Row>
-        <Square value={squares[0]} onSquareClick={() => onBoardClick(0)} />
-        <Square value={squares[1]} onSquareClick={() => onBoardClick(1)} />
-        <Square value={squares[2]} onSquareClick={() => onBoardClick(2)} />
-      </Row>
-      <Row>
-        <Square value={squares[3]} onSquareClick={() => onBoardClick(3)} />
-        <Square value={squares[4]} onSquareClick={() => onBoardClick(4)} />
-        <Square value={squares[5]} onSquareClick={() => onBoardClick(5)} />
-      </Row>
-      <Row>
-        <Square value={squares[6]} onSquareClick={() => onBoardClick(6)} />
-        <Square value={squares[7]} onSquareClick={() => onBoardClick(7)} />
-        <Square value={squares[8]} onSquareClick={() => onBoardClick(8)} />
-      </Row>
-    </>
+    <BoardContainer>
+      {squares.map((square, index) => (
+        <Square
+          key={index}
+          value={square}
+          onSquareClick={() => onBoardClick(index)}
+        />
+      ))}
+    </BoardContainer>
   );
 };
 
 export default Board;
 
-const Row = styled.div`
-  margin: 0;
-  padding: 0;
-  height: 50px;
+const BoardContainer = styled.div`
+  width: 50%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3등분 */
+  grid-template-rows: repeat(3, 1fr); /* 3등분 */
+  gap: 0; /* 셀 간의 간격 */
 `;
