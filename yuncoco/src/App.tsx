@@ -1,12 +1,24 @@
-import styled from "styled-components";
-import color from "./shared/styles/color";
+import { useState } from "react";
+
+import BoardState from "./types/board-state";
+
+import Board from "./components/board";
+import { Container, Content, Title } from "./styles";
+import BoardHistory from "./components/board-history";
 
 function App() {
-  return <Container>Container</Container>;
-}
+  const [history, setHistoroy] = useState<BoardState[]>([Array(9).fill(null)]);
+  const [currentStateIndex, setCurrentStateIndex] = useState<number>(0);
 
-const Container = styled.div`
-  color: ${color.red400};
-`;
+  return (
+    <Container>
+      <Title>🏁 Tic-Tac-Toe 🏁</Title>
+      <Content>
+        <Board currentState={history[currentStateIndex]} />
+        <BoardHistory history={history} />
+      </Content>
+    </Container>
+  );
+}
 
 export default App;

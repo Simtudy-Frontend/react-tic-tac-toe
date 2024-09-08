@@ -43,13 +43,19 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  html, body {
+  html, body, #root {
     position: fixed; /* INFO: iOS scroll bounce 방지용 */
     overflow: hidden; /* INFO: iOS scroll bounce 방지용 */
     width: 100%;
     height: 100%;
     text-size-adjust: none;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  #root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   label{
