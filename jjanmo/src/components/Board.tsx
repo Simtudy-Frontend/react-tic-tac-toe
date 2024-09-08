@@ -4,22 +4,22 @@ import { BoardData, Player, Position } from '@/types'
 import useWinner from '@/hooks/useWinner'
 
 interface Props {
-  data: BoardData
+  boardData: BoardData
   updateBoard: (position: Position) => void
   myPiece: Player
 }
 
-const Board = ({ data, updateBoard, myPiece }: Props) => {
-  const { winner } = useWinner(data)
+const Board = ({ boardData, updateBoard, myPiece }: Props) => {
+  const { winner } = useWinner(boardData)
 
   return (
     <Container>
-      {data.map((row, i) =>
+      {boardData.map((row, i) =>
         row.map((_, j) => (
           <Cell
             key={`${i}-${j}`}
             position={`${i}-${j}`}
-            cellData={data[i][j]}
+            cellData={boardData[i][j]}
             updateBoard={updateBoard}
             myPiece={myPiece}
             winner={winner}
@@ -34,6 +34,7 @@ export default Board
 const Container = styled.div`
   width: 300px;
   height: 300px;
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);

@@ -38,7 +38,7 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `
 const Button = styled.button<{ selected: boolean }>`
-  padding: 8px 24px;
+  padding: 2px 36px;
   margin: 6px;
   border: none;
   border-radius: 4px;
