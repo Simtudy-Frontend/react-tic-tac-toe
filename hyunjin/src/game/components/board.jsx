@@ -1,12 +1,14 @@
 import { calculateWinner } from "@/game/utils";
 import { ResetButton, Square } from ".";
 import { useGameContext } from "../provider/game-provider";
+import { SelectPlayer } from "./select-player";
 
 export const Board = () => {
   const {
     xIsNext,
     handlePlay: onPlay,
     currentSquares: squares,
+    player,
   } = useGameContext();
 
   const handleClick = (i) => {
@@ -14,14 +16,23 @@ export const Board = () => {
       return;
     }
     const nextSquares = squares.slice();
-    nextSquares[i] = xIsNext ? "X" : "O";
+    nextSquares[i] = xIsNext ? player : player === "X" ? "O" : "X";
     onPlay(nextSquares);
   };
-
   const winner = calculateWinner(squares);
   const status = winner
     ? `Winner: ${winner}`
-    : `Next player: ${xIsNext ? "X" : "O"}`;
+    : `Next player: ${xIsNext ? player : player === "X" ? "O" : "X"}`;
+
+  // useEffect(() => {
+  //   if (!xIsNext && !winner) {
+  //     const emptySquares = squares
+  //       .map((square, index) => (square === null ? index : null))
+  //       .filter((index) => index !== null);
+  //     const randomIndex =
+  //       emptySquares[Math.floor(Math.random() * emptySquares.length)];
+  //   }
+  // }, [xIsNext, squares, winner, handleClick]);
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
@@ -31,7 +42,7 @@ export const Board = () => {
         </h3>
         <ResetButton />
       </div>
-
+      <SelectPlayer />
       {[0, 3, 6].map((row) => (
         <div key={row} className="flex">
           <Square value={squares[row]} onClick={() => handleClick(row)} />

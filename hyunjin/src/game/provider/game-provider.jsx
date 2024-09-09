@@ -4,6 +4,7 @@ import { useReducer, createContext, useContext } from "react";
 const initialState = {
   history: [Array(9).fill(null)],
   currentMove: 0,
+  player: "X", // 기본 플레이어를 X로 설정
 };
 
 // 리듀서 함수 정의
@@ -29,6 +30,15 @@ const gameReducer = (state, action) => {
       return {
         ...initialState,
       };
+    case "SET_PLAYER":
+      return {
+        ...state,
+        player: action.player,
+      };
+    case "COMPUTER_PLAYING":
+      return {
+        ...state,
+      };
     default:
       return state;
   }
@@ -40,7 +50,7 @@ const GameContext = createContext();
 // GameProvider 컴포넌트 정의
 export const GameProvider = ({ children }) => {
   const [state, dispatch] = useReducer(gameReducer, initialState);
-  const { history, currentMove } = state;
+  const { history, currentMove, player } = state;
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
@@ -56,6 +66,14 @@ export const GameProvider = ({ children }) => {
     dispatch({ type: "RESET_GAME" });
   };
 
+  const setPlayer = (player) => {
+    dispatch({ type: "SET_PLAYER", player });
+  };
+
+  const toggleComputerPlaying = () => {
+    dispatch({ type: "TOGGLE_COMPUTER_PLAYING" });
+  };
+
   return (
     <GameContext.Provider
       value={{
@@ -66,6 +84,9 @@ export const GameProvider = ({ children }) => {
         handlePlay,
         handleResetGame,
         jumpTo,
+        setPlayer,
+        player,
+        toggleComputerPlaying,
       }}
     >
       {children}
