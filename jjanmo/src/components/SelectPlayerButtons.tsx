@@ -1,35 +1,33 @@
 import styled from 'styled-components'
-import { memo, MouseEvent, useState } from 'react'
+import { MouseEvent } from 'react'
 import { Player } from '@/types'
 
 interface Props {
   updateTurn: (initialTurn?: Player) => void
+  myPiece: Player
 }
 
-const SelectPlayerButtons = ({ updateTurn }: Props) => {
-  const [selected, setSelected] = useState<Player>('')
-
+const SelectPlayerButtons = ({ updateTurn, myPiece }: Props) => {
   const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    if (selected) return
+    if (myPiece) return
 
     const selectedPlayer = e.currentTarget.textContent as Player
     updateTurn(selectedPlayer)
-    setSelected(selectedPlayer)
   }
 
   return (
     <ButtonContainer>
-      <Button onClick={handleButtonClick} selected={selected === 'X'}>
+      <Button onClick={handleButtonClick} selected={myPiece === 'X'}>
         X
       </Button>
-      <Button onClick={handleButtonClick} selected={selected === 'O'}>
+      <Button onClick={handleButtonClick} selected={myPiece === 'O'}>
         O
       </Button>
     </ButtonContainer>
   )
 }
 
-export default memo(SelectPlayerButtons)
+export default SelectPlayerButtons
 
 const ButtonContainer = styled.div`
   width: 100%;

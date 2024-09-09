@@ -1,29 +1,29 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 import Board from '@/components/Board'
 import SelectPlayerButtons from '@/components/SelectPlayerButtons'
 import GameStatus from '@/components/GameStatus'
 import GameHistoryTracker from '@/components/GameHistoryTracker'
+import ResetButton from '@/components/ResetButton'
 
 import useWinner from '@/hooks/useWinner'
 import { getPosition } from '@/utils'
 import { BoardData, CellData, GameHistroySnapshot, Player, Position, RowData, Winner } from '@/types'
-import { initialBoardData } from '@/constants'
+import { getInitialBoardData } from '@/constants'
 
 const App = () => {
-  const [boardData, setBoardData] = useState<BoardData>(initialBoardData)
+  const [boardData, setBoardData] = useState<BoardData>(getInitialBoardData())
   const [turn, setTurn] = useState<Player>('')
   const [winner, setWinner] = useState<Winner>('')
   const [gameHistory, setGameHistory] = useState<GameHistroySnapshot[]>([])
-
-  const myPiece = useRef<Player>('')
+  const [myPiece, setMyPiece] = useState<Player>('')
 
   const { checkWinner } = useWinner()
 
   useEffect(() => {
     if (!turn) return
-    if (turn !== myPiece.current) {
+    if (turn !== myPiece) {
       const position = getPosition(boardData)
       if (!position) return
 
@@ -49,10 +49,10 @@ const App = () => {
     })
   }
 
-  const updateTurn = useCallback((selectedPlayer?: Player) => {
-    if (!turn && selectedPlayer) myPiece.current = selectedPlayer
+  const updateTurn = (selectedPlayer?: Player) => {
+    if (!turn && selectedPlayer) setMyPiece(selectedPlayer)
     setTurn((prev) => (prev === 'X' ? 'O' : 'X'))
-  }, [])
+  }
 
   const updateGameHistory = (currentSnapshot: GameHistroySnapshot) => {
     const { boardData, player, winner } = currentSnapshot
@@ -78,20 +78,24 @@ const App = () => {
     }
   }
 
+  const resetGame = () => {
+    setBoardData(getInitialBoardData())
+    setTurn('')
+    setWinner('')
+    setMyPiece('')
+    setGameHistory([])
+  }
+
   return (
     <Container>
       <Section>
-        <SelectPlayerButtons updateTurn={updateTurn} />
+        <SelectPlayerButtons updateTurn={updateTurn} myPiece={myPiece} />
         <GameStatus turn={turn} winner={winner} />
-
-        <Board boardData={boardData} myPiece={myPiece.current} winner={winner} updateBoard={updateBoard} />
+        <Board boardData={boardData} myPiece={myPiece} winner={winner} updateBoard={updateBoard} />
+        {turn && <ResetButton resetGame={resetGame} />}
       </Section>
       <Section>
-        <GameHistoryTracker
-          gameHistory={gameHistory}
-          rewindBoardToSnapshot={rewindBoardToSnapshot}
-          myPiece={myPiece.current}
-        />
+        <GameHistoryTracker gameHistory={gameHistory} rewindBoardToSnapshot={rewindBoardToSnapshot} myPiece={myPiece} />
       </Section>
     </Container>
   )
