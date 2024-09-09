@@ -1,4 +1,3 @@
-import { calculateWinner } from "@/game/utils";
 import { OverView, Square, SelectPlayer } from ".";
 import { useGameContext } from "../provider/game-provider";
 import { useEffect } from "react";
@@ -10,17 +9,17 @@ export const Board = () => {
     currentSquares: squares,
     player,
     computerPlay,
+    winner,
   } = useGameContext();
 
   const handleClick = (i) => {
-    if (calculateWinner(squares) || squares[i]) {
+    if (winner || squares[i]) {
       return;
     }
     const nextSquares = squares.slice();
     nextSquares[i] = xIsNext ? player : player === "X" ? "O" : "X";
     onPlay(nextSquares);
   };
-  const winner = calculateWinner(squares);
 
   useEffect(() => {
     if (!xIsNext && !winner) {

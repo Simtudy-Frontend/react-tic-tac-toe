@@ -1,4 +1,5 @@
 import { useReducer, createContext, useContext } from "react";
+import { calculateWinner } from "../utils";
 
 // 초기 상태 정의
 const initialState = {
@@ -67,6 +68,7 @@ export const GameProvider = ({ children }) => {
   const { history, currentMove, player } = state;
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
+  const winner = calculateWinner(currentSquares);
 
   const handlePlay = (nextSquares) => {
     dispatch({ type: "PLAY", nextSquares });
@@ -101,6 +103,7 @@ export const GameProvider = ({ children }) => {
         setPlayer,
         player,
         computerPlay,
+        winner,
       }}
     >
       {children}

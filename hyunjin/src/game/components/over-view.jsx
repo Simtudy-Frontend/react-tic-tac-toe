@@ -1,11 +1,9 @@
 import { ResetButton } from ".";
 import { useGameContext } from "../provider/game-provider";
-import { calculateWinner } from "../utils";
 
 export const OverView = () => {
-  const { xIsNext, currentSquares: squares, player } = useGameContext();
+  const { xIsNext, player, winner } = useGameContext();
 
-  const winner = calculateWinner(squares);
   const status = winner
     ? `Winner: ${winner}`
     : `Next player: ${xIsNext ? player : player === "X" ? "O" : "X"}`;
