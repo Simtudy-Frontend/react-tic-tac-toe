@@ -35,10 +35,24 @@ const gameReducer = (state, action) => {
         ...state,
         player: action.player,
       };
-    case "COMPUTER_PLAYING":
+    case "COMPUTER_PLAYING": {
+      const emptySquares = state.history[state.currentMove]
+        .map((square, index) => (square === null ? index : null))
+        .filter((index) => index !== null);
+      const randomIndex =
+        emptySquares[Math.floor(Math.random() * emptySquares.length)];
+      const nextSquares = state.history[state.currentMove].slice();
+      nextSquares[randomIndex] = state.player === "X" ? "O" : "X";
+      const nextHistory = [
+        ...state.history.slice(0, state.currentMove + 1),
+        nextSquares,
+      ];
       return {
         ...state,
+        history: nextHistory,
+        currentMove: nextHistory.length - 1,
       };
+    }
     default:
       return state;
   }
@@ -70,8 +84,8 @@ export const GameProvider = ({ children }) => {
     dispatch({ type: "SET_PLAYER", player });
   };
 
-  const toggleComputerPlaying = () => {
-    dispatch({ type: "TOGGLE_COMPUTER_PLAYING" });
+  const computerPlay = () => {
+    dispatch({ type: "COMPUTER_PLAYING" });
   };
 
   return (
@@ -86,7 +100,7 @@ export const GameProvider = ({ children }) => {
         jumpTo,
         setPlayer,
         player,
-        toggleComputerPlaying,
+        computerPlay,
       }}
     >
       {children}
