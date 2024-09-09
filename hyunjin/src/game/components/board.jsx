@@ -1,4 +1,4 @@
-import { OverView, Square, SelectPlayer, LoadingSpinner } from ".";
+import { Square, LoadingSpinner } from ".";
 import { useGameContext } from "../provider/game-provider";
 import { useEffect } from "react";
 
@@ -31,8 +31,6 @@ export const Board = () => {
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
       {isPending && <LoadingSpinner />}
-      <OverView />
-      <SelectPlayer />
       {[0, 3, 6].map((row) => (
         <div key={row} className="flex">
           <Square value={squares[row]} onClick={() => handleClick(row)} />

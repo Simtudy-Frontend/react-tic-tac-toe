@@ -34,7 +34,7 @@ export const HistoryList = () => {
   const { history } = useGameContext();
 
   return (
-    <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+    <div className="p-4 bg-gray-100 rounded-lg shadow-md ">
       <ol className="list-decimal pl-5 space-y-2">
         {history.map((_squares, move) => (
           <History key={move} move={move} />
