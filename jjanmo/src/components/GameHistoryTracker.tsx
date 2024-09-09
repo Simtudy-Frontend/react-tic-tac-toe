@@ -17,7 +17,7 @@ const GameHistoryTracker = ({ myPiece, gameHistory, rewindBoardToSnapshot }: Pro
     <Container>
       <Title>게임 히스토리</Title>
       {gameHistory.map((gameHistorySnapshot, index) => (
-        <Button key={index} onClick={handleSnapshotClick(index)} disabled={myPiece === gameHistorySnapshot.player}>
+        <Button key={index} onClick={handleSnapshotClick(index)}>
           게임 스냅샵 #{index + 1} {gameHistorySnapshot.player} {gameHistorySnapshot.winner}
         </Button>
       ))}
