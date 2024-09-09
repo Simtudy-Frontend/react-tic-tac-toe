@@ -1,4 +1,4 @@
-import { OverView, Square, SelectPlayer } from ".";
+import { OverView, Square, SelectPlayer, LoadingSpinner } from ".";
 import { useGameContext } from "../provider/game-provider";
 import { useEffect } from "react";
 
@@ -10,6 +10,7 @@ export const Board = () => {
     player,
     computerPlay,
     winner,
+    isPending,
   } = useGameContext();
 
   const handleClick = (i) => {
@@ -22,13 +23,14 @@ export const Board = () => {
   };
 
   useEffect(() => {
-    if (!xIsNext && !winner) {
+    if (!isPending && !xIsNext && !winner) {
       computerPlay();
     }
-  }, [xIsNext, squares, winner, computerPlay]);
+  }, [xIsNext, squares, winner, computerPlay, isPending]);
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
+      {isPending && <LoadingSpinner />}
       <OverView />
       <SelectPlayer />
       {[0, 3, 6].map((row) => (

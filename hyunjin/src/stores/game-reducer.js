@@ -5,11 +5,36 @@ const initialState = {
   history: [Array(9).fill(null)],
   currentMove: 0,
   player: "X", // 기본 플레이어를 X로 설정
+  isPending: false,
+  isError: false,
+  isSuccess: false,
 };
 
 // 리듀서 함수 정의
- const gameReducer = (state, action) => {
+const gameReducer = (state, action) => {
   switch (action.type) {
+    case "PENDING":
+      return {
+        ...state,
+        isPending: true,
+        isError: false,
+        isSuccess: false,
+      };
+    case "SUCCESS":
+      return {
+        ...state,
+        isPending: false,
+        isError: false,
+        isSuccess: true,
+        ...action.data,
+      };
+    case "ERROR":
+      return {
+        ...state,
+        isPending: false,
+        isError: true,
+        isSuccess: false,
+      };
     case "PLAY": {
       const nextHistory = [
         ...state.history.slice(0, state.currentMove + 1),
@@ -35,24 +60,7 @@ const initialState = {
         ...state,
         player: action.player,
       };
-    case "COMPUTER_PLAYING": {
-      const emptySquares = state.history[state.currentMove]
-        .map((square, index) => (square === null ? index : null))
-        .filter((index) => index !== null);
-      const randomIndex =
-        emptySquares[Math.floor(Math.random() * emptySquares.length)];
-      const nextSquares = state.history[state.currentMove].slice();
-      nextSquares[randomIndex] = state.player === "X" ? "O" : "X";
-      const nextHistory = [
-        ...state.history.slice(0, state.currentMove + 1),
-        nextSquares,
-      ];
-      return {
-        ...state,
-        history: nextHistory,
-        currentMove: nextHistory.length - 1,
-      };
-    }
+   
     default:
       return state;
   }

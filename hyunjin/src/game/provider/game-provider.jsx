@@ -8,7 +8,7 @@ const GameContext = createContext();
 // GameProvider 컴포넌트 정의
 export const GameProvider = ({ children }) => {
   const [state, dispatch] = useGameReducer();
-  const { history, currentMove, player } = state;
+  const { history, currentMove, player, isPending, isError, isSuccess } = state;
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
   const winner = calculateWinner(currentSquares);
@@ -29,8 +29,36 @@ export const GameProvider = ({ children }) => {
     dispatch({ type: "SET_PLAYER", player });
   };
 
-  const computerPlay = () => {
-    dispatch({ type: "COMPUTER_PLAYING" });
+  const fetchComputerPlay = async () => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const nextSquares = history[currentMove].slice();
+        const emptySquares = nextSquares.reduce(
+          (acc, square, index) => (!square ? [...acc, index] : acc),
+          []
+        );
+        const randomIndex =
+          emptySquares[Math.floor(Math.random() * emptySquares.length)];
+        if (randomIndex === undefined) {
+          reject(new Error("No empty squares"));
+        }
+        nextSquares[randomIndex] = player === "X" ? "O" : "X";
+        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+        resolve({
+          history: nextHistory,
+          currentMove: nextHistory.length - 1,
+        });
+      }, 2000);
+    });
+  };
+
+  const computerPlay = async () => {
+    dispatch({ type: "PENDING" });
+    try {
+      dispatch({ type: "SUCCESS", data: await fetchComputerPlay() });
+    } catch (error) {
+      dispatch({ type: "ERROR", error });
+    }
   };
 
   return (
@@ -47,6 +75,9 @@ export const GameProvider = ({ children }) => {
         player,
         computerPlay,
         winner,
+        isPending,
+        isError,
+        isSuccess,
       }}
     >
       {children}
