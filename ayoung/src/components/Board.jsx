@@ -25,4 +25,5 @@ const BoardContainer = styled.div`
   grid-template-columns: repeat(3, 1fr); /* 3등분 */
   grid-template-rows: repeat(3, 1fr); /* 3등분 */
   gap: 0; /* 셀 간의 간격 */
+  max-width: 300px;
 `;

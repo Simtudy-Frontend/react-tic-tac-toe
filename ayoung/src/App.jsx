@@ -98,6 +98,7 @@ const Container = styled.div`
 const RestartButton = styled.button`
   margin-top: 5px;
   width: 50%;
+  max-width: 300px;
   background: none;
   border: none;
   cursor: pointer;

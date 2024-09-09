@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const SelectPlayer = ({ player, onPlayerSelect, turnMark }) => {
   return (
-    <Container>
+    <SelectContainer>
       <PlayerButton
         onClick={() => onPlayerSelect("X")}
         $isSelected={player === "X"}
@@ -17,14 +17,15 @@ const SelectPlayer = ({ player, onPlayerSelect, turnMark }) => {
       >
         O
       </PlayerButton>
-    </Container>
+    </SelectContainer>
   );
 };
 
 export default SelectPlayer;
 
-const Container = styled.div`
+const SelectContainer = styled.div`
   width: 50%;
+  max-width: 300px;
   height: 5vh;
   display: flex;
   justify-content: space-between;
