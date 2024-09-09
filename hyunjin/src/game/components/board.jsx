@@ -1,7 +1,6 @@
 import { calculateWinner } from "@/game/utils";
-import { ResetButton, Square } from ".";
+import { OverView, Square, SelectPlayer } from ".";
 import { useGameContext } from "../provider/game-provider";
-import { SelectPlayer } from "./select-player";
 
 export const Board = () => {
   const {
@@ -19,29 +18,10 @@ export const Board = () => {
     nextSquares[i] = xIsNext ? player : player === "X" ? "O" : "X";
     onPlay(nextSquares);
   };
-  const winner = calculateWinner(squares);
-  const status = winner
-    ? `Winner: ${winner}`
-    : `Next player: ${xIsNext ? player : player === "X" ? "O" : "X"}`;
-
-  // useEffect(() => {
-  //   if (!xIsNext && !winner) {
-  //     const emptySquares = squares
-  //       .map((square, index) => (square === null ? index : null))
-  //       .filter((index) => index !== null);
-  //     const randomIndex =
-  //       emptySquares[Math.floor(Math.random() * emptySquares.length)];
-  //   }
-  // }, [xIsNext, squares, winner, handleClick]);
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
-      <div className="flex justify-between items-center mb-4 ">
-        <h3 className="text-xl 2xl:text-3xl font-semibold text-center text-gray-700">
-          {status}
-        </h3>
-        <ResetButton />
-      </div>
+      <OverView />
       <SelectPlayer />
       {[0, 3, 6].map((row) => (
         <div key={row} className="flex">
