@@ -14,7 +14,7 @@ function App() {
       <div>
         <SelectHistory/>
       </div>
-    </div>
+    </div>  
   );
 }
 
