@@ -50,7 +50,7 @@ const App = () => {
       updateSquares(position, mark);
     }, 700);
     return () => clearTimeout(timer);
-  }, [isPlayerTurn, mark, squares]);
+  }, [isPlayerTurn, mark]);
 
   const handleReset = () => {
     setSquares(Array(9).fill(null)); // 게임 보드를 초기화
