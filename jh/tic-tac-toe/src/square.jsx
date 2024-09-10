@@ -24,34 +24,19 @@ export default function Square() {
   return (
     <>
       <div>
-        <ImageToggleButton firstImage={p1} secondImage={p2}></ImageToggleButton>
-        <ImageToggleButton firstImage={p3} secondImage={p4}></ImageToggleButton>
-        <ImageToggleButton firstImage={p5} secondImage={p6}></ImageToggleButton>
+        <ImageToggleButton firstImage={p1} secondImage={p2} />
+        <ImageToggleButton firstImage={p3} secondImage={p4} />
+        <ImageToggleButton firstImage={p5} secondImage={p6} />
       </div>
       <div>
-        <ImageToggleButton firstImage={p7} secondImage={p8}></ImageToggleButton>
-        <ImageToggleButton
-          firstImage={p9}
-          secondImage={p10}
-        ></ImageToggleButton>
-        <ImageToggleButton
-          firstImage={p11}
-          secondImage={p12}
-        ></ImageToggleButton>
+        <ImageToggleButton firstImage={p7} secondImage={p8} />
+        <ImageToggleButton firstImage={p9} secondImage={p10} />
+        <ImageToggleButton firstImage={p11} secondImage={p12} />
       </div>
       <div>
-        <ImageToggleButton
-          firstImage={p13}
-          secondImage={p14}
-        ></ImageToggleButton>
-        <ImageToggleButton
-          firstImage={p15}
-          secondImage={p16}
-        ></ImageToggleButton>
-        <ImageToggleButton
-          firstImage={p17}
-          secondImage={p18}
-        ></ImageToggleButton>
+        <ImageToggleButton firstImage={p13} secondImage={p14} />
+        <ImageToggleButton firstImage={p15} secondImage={p16} />
+        <ImageToggleButton firstImage={p17} secondImage={p18} />
       </div>
     </>
   );
