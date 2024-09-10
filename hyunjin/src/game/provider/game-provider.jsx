@@ -37,11 +37,19 @@ export const GameProvider = ({ children }) => {
           (acc, square, index) => (!square ? [...acc, index] : acc),
           []
         );
-        const randomIndex =
-          emptySquares[Math.floor(Math.random() * emptySquares.length)];
+
+        let randomIndex;
+        if (emptySquares.length === 0) {
+          randomIndex = 0;
+        } else {
+          randomIndex =
+            emptySquares[Math.floor(Math.random() * emptySquares.length)];
+        }
+
         if (randomIndex === undefined) {
           reject(new Error("No empty squares"));
         }
+
         nextSquares[randomIndex] = player === "X" ? "O" : "X";
         const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
         resolve({
