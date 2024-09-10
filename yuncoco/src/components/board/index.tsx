@@ -10,13 +10,19 @@ interface BoardProps {
 }
 
 export default function Board(props: BoardProps) {
-  console.log("currentState", props.currentState);
   return (
     <Container>
       <Title>[Board]</Title>
       <CellGroup>
         {props.currentState.map((item, index) => (
-          <Cell key={index} onCellClick={() => props.onPlay(index)}>
+          <Cell
+            key={index}
+            onCellClick={() => {
+              if (!item) {
+                props.onPlay(index);
+              }
+            }}
+          >
             {item}
           </Cell>
         ))}
