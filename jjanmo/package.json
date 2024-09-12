@@ -22,6 +22,7 @@
     "esbuild-loader": "^4.2.2",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
     "html-webpack-plugin": "^5.6.0",
+    "react-refresh": "^0.14.2",
     "typescript": "^5.5.4",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
