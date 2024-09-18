@@ -1,13 +1,21 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React, { useState } from "react";
 import "./App.css";
-import Square from "./square.jsx";
+import Square from "./selection-board.jsx";
+import GameBoard from "./game-board.jsx";
 
 function App() {
+  const [selectedCharactor, setSelectedCharactor] = useState("");
+  console.log("app", setSelectedCharactor);
+
   return (
     <>
-      <Square></Square>
+      <div>
+        {selectedCharactor ? (
+          <GameBoard />
+        ) : (
+          <Square onSelected={setSelectedCharactor} />
+        )}
+      </div>
     </>
   );
 }
