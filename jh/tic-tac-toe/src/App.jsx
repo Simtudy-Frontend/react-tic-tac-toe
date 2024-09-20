@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { Provider, useSelector } from "react-redux";
 import "./App.css";
-import Square from "./selection-board.jsx";
-import GameBoard from "./game-board.jsx";
+import SelectionPage from "./selection-board.jsx";
+import GamePage from "./game-board.jsx";
+import { store } from "./store.js";
 
-function App() {
-  const [selectedCharactor, setSelectedCharactor] = useState("");
+function AppContent() {
+  const player1Character = useSelector((state) => state.game.player1Character);
+  const player2Character = useSelector((state) => state.game.player2Character);
 
   return (
-    <>
-      <div>
-        {selectedCharactor ? (
-          <GameBoard charactor={selectedCharactor} />
-        ) : (
-          <Square onSelected={setSelectedCharactor} />
-        )}
-      </div>
-    </>
+    <div>
+      {player1Character && player2Character ? <GamePage /> : <SelectionPage />}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
   );
 }
 
