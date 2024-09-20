@@ -1,0 +1,57 @@
+/* Game Board Styles */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.game-cell {
+  aspect-ratio: 1 / 1;
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.game-cell:hover {
+  background-color: #e0e0e0;
+}
+
+.player-image {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+/* Character Selection Status Styles */
+.character-selection-status {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 0.9em;
+}
+
+.character-selection-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 250px;
+  margin: 0 auto;
+}
+
+.character-box {
+  text-align: center;
+}
+
+.character-image {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid #333;
+}

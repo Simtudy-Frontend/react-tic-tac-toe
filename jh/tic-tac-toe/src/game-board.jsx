@@ -1,54 +1,29 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { switchPlayer } from "./store";
+import "./game-board.css";
 
 function CharacterSelectionStatus() {
   const player1Character = useSelector((state) => state.game.player1Character);
   const player2Character = useSelector((state) => state.game.player2Character);
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-        marginBottom: "15px",
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "10px",
-        backgroundColor: "#f5f5f5",
-        maxWidth: "300px",
-        margin: "0 auto",
-      }}
-    >
-      <h3 style={{ marginBottom: "10px" }}>Character Selection</h3>
-      <div style={{ display: "flex", justifyContent: "center", gap: "15px" }}>
-        <div
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "4px",
-            padding: "5px",
-            backgroundColor: "white",
-          }}
-        >
-          <p style={{ fontSize: "14px", margin: "0 0 5px 0" }}>Player 1</p>
+    <div className="character-selection-status">
+      <div className="character-selection-container">
+        <div className="character-box">
+          <p>Player 1</p>
           <img
             src={player1Character.image}
             alt="Player 1"
-            style={{ width: "40px", height: "40px" }}
+            className="character-image"
           />
         </div>
-        <div
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "4px",
-            padding: "5px",
-            backgroundColor: "white",
-          }}
-        >
-          <p style={{ fontSize: "14px", margin: "0 0 5px 0" }}>Player 2</p>
+        <div className="character-box">
+          <p>Player 2</p>
           <img
             src={player2Character.image}
             alt="Player 2"
-            style={{ width: "40px", height: "40px" }}
+            className="character-image"
           />
         </div>
       </div>
@@ -58,13 +33,14 @@ function CharacterSelectionStatus() {
 
 export default function GamePage() {
   const [board, setBoard] = useState(Array(9).fill(null));
+  const [showResult, setShowResult] = useState(false);
   const player1Character = useSelector((state) => state.game.player1Character);
   const player2Character = useSelector((state) => state.game.player2Character);
   const currentPlayer = useSelector((state) => state.game.currentPlayer);
   const dispatch = useDispatch();
 
   const handleCellClick = (index) => {
-    if (board[index] === null) {
+    if (board[index] === null && !showResult) {
       const newBoard = [...board];
       newBoard[index] =
         currentPlayer === 1 ? player1Character : player2Character;
@@ -73,42 +49,80 @@ export default function GamePage() {
     }
   };
 
+  const handleReset = () => {
+    setBoard(Array(9).fill(null));
+    dispatch(switchPlayer(1)); // Reset to player 1
+    setShowResult(false);
+  };
+
+  const checkWinner = () => {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i];
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a] === player1Character ? "Player 1" : "Player 2";
+      }
+    }
+    return null;
+  };
+
+  const winner = checkWinner();
+  const isBoardFull = board.every((cell) => cell !== null);
+
+  React.useEffect(() => {
+    if (winner || isBoardFull) {
+      setShowResult(true);
+    }
+  }, [winner, isBoardFull]);
+
   return (
     <>
       <CharacterSelectionStatus />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 1fr)",
-          gap: "10px",
-          maxWidth: "300px",
-          margin: "20px auto",
-        }}
-      >
+      <div className="game-board">
         {board.map((cell, index) => (
           <div
             key={index}
             onClick={() => handleCellClick(index)}
-            style={{
-              width: "100px",
-              height: "100px",
-              border: "1px solid #ccc",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
+            className="game-cell"
           >
-            {cell && (
+            {cell ? (
               <img
                 src={cell.image}
                 alt={`Player ${cell === player1Character ? "1" : "2"}`}
-                style={{ width: "80px", height: "80px" }}
+                className="player-image"
               />
+            ) : (
+              <div className="empty-cell"></div>
             )}
           </div>
         ))}
       </div>
+      {showResult && (
+        <div className="result-overlay">
+          <div className="result-content">
+            {winner ? (
+              <p>{winner} wins!</p>
+            ) : isBoardFull ? (
+              <p>It's a draw!</p>
+            ) : (
+              <p>Current player: Player {currentPlayer}</p>
+            )}
+            <button onClick={handleReset} className="reset-button">
+              Play Again
+            </button>
+          </div>
+        </div>
+      )}
+      {!showResult && <p>Current player: Player {currentPlayer}</p>}
     </>
   );
 }
