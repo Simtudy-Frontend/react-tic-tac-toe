@@ -87,41 +87,43 @@ export default function GamePage() {
   return (
     <>
       <CharacterSelectionStatus />
-      <div className="game-board">
-        {board.map((cell, index) => (
-          <div
-            key={index}
-            onClick={() => handleCellClick(index)}
-            className="game-cell"
-          >
-            {cell ? (
-              <img
-                src={cell.image}
-                alt={`Player ${cell === player1Character ? "1" : "2"}`}
-                className="player-image"
-              />
-            ) : (
-              <div className="empty-cell"></div>
-            )}
-          </div>
-        ))}
-      </div>
-      {showResult && (
-        <div className="result-overlay">
-          <div className="result-content">
-            {winner ? (
-              <p>{winner} wins!</p>
-            ) : isBoardFull ? (
-              <p>It's a draw!</p>
-            ) : (
-              <p>Current player: Player {currentPlayer}</p>
-            )}
-            <button onClick={handleReset} className="reset-button">
-              Play Again
-            </button>
-          </div>
+      <div className="game-board-container">
+        <div className="game-board">
+          {board.map((cell, index) => (
+            <div
+              key={index}
+              onClick={() => handleCellClick(index)}
+              className="game-cell"
+            >
+              {cell ? (
+                <img
+                  src={cell.image}
+                  alt={`Player ${cell === player1Character ? "1" : "2"}`}
+                  className="player-image"
+                />
+              ) : (
+                <div className="empty-cell"></div>
+              )}
+            </div>
+          ))}
         </div>
-      )}
+        {showResult && (
+          <div className="game-result-overlay">
+            <div className="result-content">
+              {winner ? (
+                <p>{winner} wins!</p>
+              ) : isBoardFull ? (
+                <p>It's a draw!</p>
+              ) : (
+                <p>Current player: Player {currentPlayer}</p>
+              )}
+              <button onClick={handleReset} className="reset-button">
+                Play Again
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       {!showResult && <p>Current player: Player {currentPlayer}</p>}
     </>
   );
