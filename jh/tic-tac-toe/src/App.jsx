@@ -5,13 +5,12 @@ import GameBoard from "./game-board.jsx";
 
 function App() {
   const [selectedCharactor, setSelectedCharactor] = useState("");
-  console.log("app", setSelectedCharactor);
 
   return (
     <>
       <div>
         {selectedCharactor ? (
-          <GameBoard />
+          <GameBoard charactor={selectedCharactor} />
         ) : (
           <Square onSelected={setSelectedCharactor} />
         )}

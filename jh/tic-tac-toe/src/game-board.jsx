@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 
-export default function GameBoard(onSelected) {
+export default function GameBoard({ charactor }) {
   return (
     <>
-      <div></div>
+      <div>
+        <button>
+          {" "}
+          <img src={charactor.image}></img>
+        </button>
+      </div>
     </>
   );
 }
