@@ -1,14 +1,26 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React from "react";
+import { Provider, useSelector } from "react-redux";
 import "./App.css";
-import Square from "./square.jsx";
+import SelectionPage from "./selection-board.jsx";
+import GamePage from "./game-board.jsx";
+import { store } from "./store.js";
+
+function AppContent() {
+  const player1Character = useSelector((state) => state.game.player1Character);
+  const player2Character = useSelector((state) => state.game.player2Character);
+
+  return (
+    <div>
+      {player1Character && player2Character ? <GamePage /> : <SelectionPage />}
+    </div>
+  );
+}
 
 function App() {
   return (
-    <>
-      <Square></Square>
-    </>
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
   );
 }
 
