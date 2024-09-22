@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const Square = ({ value, onSquareClick, isWinningLine }) => {
+const Square = ({ value, onClick, isWinningLine }) => {
   return (
-    <Button onClick={onSquareClick} $highlight={isWinningLine}>
+    <Button onClick={onClick} $highlight={isWinningLine}>
       {value}
     </Button>
   );

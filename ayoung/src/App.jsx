@@ -74,7 +74,7 @@ const App = () => {
       ></SelectPlayer>
       <Board
         squares={squares}
-        onBoardClick={handleClick}
+        onClick={handleClick}
         winningLine={winner.line}
       ></Board>
       <RestartButton onClick={handleReset}>게임 다시 시작하기</RestartButton>

@@ -37,7 +37,7 @@ const PlayerButton = styled.div`
   width: 50%;
   margin-bottom: 2px;
   background-color: ${(props) => (props.$isSelected ? "#D6E4E5" : "#f1f1f1")};
-  color: ${(props) => (props.$isSelected ? "black" : "black")};
+  color: ${(props) => (props.$isSelected ? "black" : "gray")};
   border: 2px solid ${(props) => (props.$isTurn ? "gold" : "white")};
   border-radius: 3px;
   cursor: pointer;
